@@ -1,31 +1,27 @@
-package ru.job4j.hibernate.model;
+package ru.job4j.hibernate.books.model;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 
 @Entity
-@Table(name = "make")
-public class Make {
+@Table(name = "authors")
+public class Author {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
     private String name;
 
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Model> models = new ArrayList<>();
+    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    private Set<Book> books = new HashSet<>();
 
-    public static Make of(String name) {
-        Make make = new Make();
-        make.name = name;
-        return make;
-    }
-
-    public boolean addModel(Model model) {
-        return this.models.add(model);
+    public static Author of(String name) {
+        Author author = new Author();
+        author.name = name;
+        return author;
     }
 
     public int getId() {
@@ -44,12 +40,12 @@ public class Make {
         this.name = name;
     }
 
-    public List<Model> getModels() {
-        return models;
+    public Set<Book> getBooks() {
+        return books;
     }
 
-    public void setModels(List<Model> models) {
-        this.models = models;
+    public void setBooks(Set<Book> books) {
+        this.books = books;
     }
 
     @Override
@@ -60,8 +56,8 @@ public class Make {
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-        Make make = (Make) o;
-        return id == make.id;
+        Author author = (Author) o;
+        return id == author.id && Objects.equals(name, author.name);
     }
 
     @Override

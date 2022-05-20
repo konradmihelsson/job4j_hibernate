@@ -1,11 +1,11 @@
-package ru.job4j.hibernate.model;
+package ru.job4j.hibernate.books.model;
 
 import javax.persistence.*;
 import java.util.Objects;
 
 @Entity
-@Table(name = "model")
-public class Model {
+@Table(name = "book")
+public class Book {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -13,10 +13,10 @@ public class Model {
 
     private String name;
 
-    public static Model of(String name) {
-        Model model = new Model();
-        model.name = name;
-        return model;
+    public static Book of(String name) {
+        Book book = new Book();
+        book.name = name;
+        return book;
     }
 
     public int getId() {
@@ -43,8 +43,8 @@ public class Model {
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-        Model model = (Model) o;
-        return id == model.id;
+        Book book = (Book) o;
+        return id == book.id && Objects.equals(name, book.name);
     }
 
     @Override
